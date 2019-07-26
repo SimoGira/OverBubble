@@ -30,23 +30,16 @@ class ViewController: NSViewController {
             
             // check if mouse is inner window and update smallBubble position
             if NSWindow.windowNumber(at: self.mouseLocation, belowWindowWithWindowNumber: 0) == self.view.window?.windowNumber {
-                //print("mouseLocation:", String(format: "%.1f, %.1f", self.mouseLocation.x, self.mouseLocation.y))
                 smallBubble.update(posX: self.mouseLocation.x-128-32, posY: self.mouseLocation.y-128-64)
             }
             
-           
-            //print("\(smallBubble.getLocation().x)  ,  \(smallBubble.getLocation().y)")
-            //print("\(bigBubble.getLocation().x)  ,  \(bigBubble.getLocation().y)")
             
-            // c'è un errore questo approccio è sbagliato xk non guarda i punti sulla circonferenza
-            // ma la tratta come coordinate cartesiane
+            let sbx = Float(abs(smallBubble.getLocation().x - bigBubble.getLocation().x))
+            let sby = Float(abs(smallBubble.getLocation().y - bigBubble.getLocation().y))
+            let ss = sqrt(powf(sbx,2) + powf(sby,2))
             
-            let ssx = Int(abs(smallBubble.getLocation().x - bigBubble.getLocation().x))
-            let ssy = Int(abs(smallBubble.getLocation().y - bigBubble.getLocation().y))
-            let ss = Float(ssx * ssx + ssy * ssy)
-            
-            if ( sqrt(ss) <= 96) {
-                print("intersection: \(ssx), \(ssy)")
+            if (ss <= 96) {
+                print("intersection: \(Int(sbx)), \(Int(sby))")
                 self.rootLayer.backgroundColor = #colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1)
             }
             else {
@@ -66,14 +59,5 @@ class ViewController: NSViewController {
         self.view.layer = rootLayer
         self.view.wantsLayer = true
     }
-
-
-    override var representedObject: Any? {
-        didSet {
-        // Update the view, if already loaded.
-        }
-    }
-
-
 }
 
